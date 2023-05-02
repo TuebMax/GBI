@@ -4,6 +4,8 @@ A1/out/
 !**/src/test/**/out/
 .idea
 */.idea
+out
+*/out
 ### Eclipse ###
 .apt_generated
 .classpath

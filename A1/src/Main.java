@@ -10,9 +10,12 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        System.out.println("GBI - Exercise Sheet 1 \n" + "Max Wilhelm & Christopher Kolberg" );
+        System.out.println("GBI - Exercise Sheet 1 \n" + "Christopher Kolberg & Maximilian Wilhelm" );
         // Call all functions from here and organise the output
         FastaReader fastaReader = new FastaReader();
+
+        // TODO: java.lang.ArrayIndexOutOfBoundsException: Index 0 out of bounds for length 0 at Main.main(Main.java:16) Zeile drunter
+        // TODO: Sollen wir hier nicht einfach den Path angeben im Ordner und die Datei mit zippen?
         List<Fasta> inputFastas = fastaReader.readInFasta(args[0]);
         for (int i = 0; i < inputFastas.size(); i++) {
             System.out.println("Length of sequence " + (i+1) + ": " + fastaReader.calculateSequenceLength(inputFastas.get(i)));
