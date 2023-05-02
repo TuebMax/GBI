@@ -21,23 +21,27 @@ public class Main {
         }
         System.out.println("Total number of sequences: " + inputFastas.size());
 
-
-        String outputFilename = "ry_" + args[0];
-        File ryOutputFile = new File(outputFilename);
-        ryOutputFile.createNewFile();
-        for (int i = 0; i < inputFastas.size(); i++) {
-            String rySequence = inputFastas.get(i).getSequence();
-            rySequence = rySequence.replace("A", "R");
-            rySequence = rySequence.replace("G", "R");
-
-            rySequence = rySequence.replace("C", "Y");
-            rySequence = rySequence.replace("T", "Y");
-            fastaReader.writeOutFasta(new Fasta(inputFastas.get(i).getHeader(), rySequence), outputFilename);
-        }
+        outputAsRYFile(args[0], fastaReader, inputFastas);
 
         if(args[0].equals("sequences-edit.fasta")){
             List<Fasta> editFastas = fastaReader.readInFasta(args[0]);
             System.out.println("The edit distance between the sequences is: " + new EditDistance().computeEditDistance(editFastas.get(0), editFastas.get(1)));
+        }
+    }
+
+    private static void outputAsRYFile(String filename, FastaReader fastaReader, List<Fasta> inputFastas) throws IOException {
+        String outputFilename = "ry_" + filename;
+        File ryOutputFile = new File(outputFilename);
+        ryOutputFile.createNewFile();
+        for (int i = 0; i < inputFastas.size(); i++) {
+            String rySequence = inputFastas.get(i).getSequence();
+
+            rySequence = rySequence.replace("A", "R");
+            rySequence = rySequence.replace("G", "R");
+            rySequence = rySequence.replace("C", "Y");
+            rySequence = rySequence.replace("T", "Y");
+
+            fastaReader.writeOutFasta(new Fasta(inputFastas.get(i).getHeader(), rySequence), outputFilename);
         }
     }
 

@@ -35,7 +35,7 @@ public class FastaReader {
                     header = line.substring(1);
                     continue;
                 }
-                sequence.append(line);
+                sequence.append(line.replace(" ", ""));
             }
             Fasta newFasta = new Fasta(header, sequence.toString());
             fastaEntries.add(newFasta);
@@ -82,11 +82,11 @@ public class FastaReader {
             bufferedWriter.write(">" + fasta.getHeader());
             bufferedWriter.newLine();
             String sequence = fasta.getSequence();
-            for(int i = 0; i <= sequence.length() - 60; i+=60) {
-                bufferedWriter.write(sequence.substring(i, i + 60));
+            for(int i = 0; i <= sequence.length() - 70; i+=70) {
+                bufferedWriter.write(sequence.substring(i, i + 70));
                 bufferedWriter.newLine();
             }
-            bufferedWriter.write(sequence.substring(sequence.length() - sequence.length() % 60));
+            bufferedWriter.write(sequence.substring(sequence.length() - sequence.length() % 70));
             bufferedWriter.newLine();
         }catch (Exception e) {
             e.printStackTrace();
