@@ -1,6 +1,6 @@
 /**
  * Assignment 01
- * Authors:Max Wilhelm, Christopher Kolberg
+ * Authors: Christopher Kolberg, Maximilian Wilhelm
  */
 
 import java.io.BufferedReader;

@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * Assignment 01
- * Authors:Max Wilhelm & Christopher Kolberg
+ * Authors: Christopher Kolberg, Maximilian Wilhelm
  */
 
 public class Main {
