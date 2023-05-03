@@ -10,7 +10,7 @@ public class EditDistance {
      *
      */
 
-    public int computeEditDistance(Fasta fasta1, Fasta fasta2){
+    public Integer computeEditDistance(Fasta fasta1, Fasta fasta2){
 
         /*
          * Declare 2 sequence-variables
@@ -24,7 +24,7 @@ public class EditDistance {
          * Initialize table with an empty integer array and set the length based on the parameter-sequence length
          * Extend both dimensions by one to guarantee one column and row for the Initialization of the Algorithm
          */
-        int[][] table = new int[sequence1.length() + 1][sequence2.length() + 1];
+        Integer[][] table = new Integer[sequence1.length() + 1][sequence2.length() + 1];
 
         /*
          * Iterate through every cell of the table
