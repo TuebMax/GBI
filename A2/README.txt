@@ -1,0 +1,3 @@
+- If you did not manage to implement an own FASTA parser in Assignment 1, feel free to use the SimpleFastaParser.jar (located in A2/lib/)
+- The two sequences to apply your Smith-Waterman aligner are located in A2/resources/
+- The code skeleton includes a more sophisticated approach to parsing CLI parameters based on the commons-cli package. The corresponding JAR is located in A2/lib/. Feel free to use it!
