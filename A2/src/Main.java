@@ -8,6 +8,11 @@ import java.io.File;
  * Authors: Christopher Kolberg and Maximilian Wilhelm
  */
 public class Main {
+
+    private static int matchScore;
+    private static int mismatchScore;
+    private static int gapPenalty;
+
     public static void main(String[] args) {
         System.out.println("GBI - Exercise Sheet 2");
         Options cliOptions = new Options();
@@ -52,7 +57,7 @@ public class Main {
                 .build()
         );
 
-        try (BufferedWriter bw = new BufferedWriter(new java.io.FileWriter("alignment.txt"))) {
+        try {
             // Setting up the command line parser
             CommandLineParser parser = new DefaultParser();
             CommandLine params = parser.parse(cliOptions, args);
@@ -62,26 +67,87 @@ public class Main {
             String filenameTarget = params.getOptionValue("fp2");
             String querySequence = SimpleFastaReader.parseFastaFile(new File(filenameQuery)).get(0).getSequence();
             String targetSequence = SimpleFastaReader.parseFastaFile(new File(filenameTarget)).get(0).getSequence();
-            int matchScore = Integer.parseInt(params.getOptionValue("masc"));
-            int mismatchScore = Integer.parseInt(params.getOptionValue("misc"));
-            int gapPenalty = Integer.parseInt(params.getOptionValue("gp"));
+            matchScore = Integer.parseInt(params.getOptionValue("masc"));
+            mismatchScore = Integer.parseInt(params.getOptionValue("misc"));
+            gapPenalty = Integer.parseInt(params.getOptionValue("gp"));
             SmithWatermanAligner smithWatermanAligner = new SmithWatermanAligner(matchScore, mismatchScore, gapPenalty, querySequence, targetSequence);
             int optimalScore = smithWatermanAligner.alignSequences();
             System.out.println("The optimal local alignment score for \"" + filenameQuery + "\" and \"" + filenameTarget + "\" is: " + optimalScore);
             // Writing the results to a file
-            bw.write("The optimal local alignment score for \"" + filenameQuery + "\" and \"" + filenameTarget + "\" is: " + optimalScore);
-            bw.newLine();
-            bw.write("The optimal local alignment is: ");
-            bw.newLine();
-            bw.write(smithWatermanAligner.traceback());
-            bw.newLine();
+            writeResultsToFile(filenameQuery, filenameTarget, optimalScore, smithWatermanAligner);
+        } catch (Exception e) {
+            System.err.println("Error parsing arguments: " + e.getMessage());
+        }
+    }
+
+
+    private static void writeResultsToFile(String filenameQuery, String filenameTarget, int optimalScore, SmithWatermanAligner smithWatermanAligner) {
+        try (BufferedWriter bw = new BufferedWriter(new java.io.FileWriter("alignment.txt"))) {
+            bw.write("The optimal local alignment score for \"" + filenameQuery + "\" and \"" + filenameTarget + "\" was calculated \n" +
+                    "using the Smith-Waterman algorithm with the following parameters: \n");
+            bw.write("----------------------------------------------\n");
+            bw.write("Match score: " + matchScore + "\n");
+            bw.write("Mismatch score: " + mismatchScore + "\n");
+            bw.write("Gap penalty: " + gapPenalty + "\n");
+            bw.write("----------------------------------------------\n");
+            String traceback = smithWatermanAligner.traceback();
+
             bw.write("The local alignment starts at index " +
                     smithWatermanAligner.getStartCell()[0] +
                     " in sequence 1 and at index " +
                     smithWatermanAligner.getStartCell()[1] +
-                    " in sequence 2.");
+                    " in sequence 2. \n");
+            bw.write("The score of the local alignment is: " + optimalScore + "\n");
+            bw.write("----------------------------------------------\n");
+            bw.write("The position lines show the index in the original sequences. \n");
+            bw.write("The symbol line shows the alignment of the two sequences. \n");
+            bw.write("The sequence lines show the sequences with gaps inserted. \n");
+            bw.write("| indicates a match, : indicates a mismatch and a space indicates a gap. \n");
+            bw.write("----------------------------------------------\n");
+
+            String seq1Local = traceback.split("\n")[0];
+            int seq1Position = smithWatermanAligner.getStartCell()[0];
+            String seq2Local = traceback.split("\n")[1];
+            int seq2Position = smithWatermanAligner.getStartCell()[1];
+
+            int i = 0;
+            StringBuilder position1Line = new StringBuilder("Position 1:  ");
+            StringBuilder seq1Line = new StringBuilder("Sequence 1:");
+            StringBuilder symbolLine = new StringBuilder("Symbol:    ");
+            StringBuilder seq2Line = new StringBuilder("Sequence 2:");
+            StringBuilder position2Line = new StringBuilder("Position 2:  ");
+            while (true) {
+                i = i + 1;
+                if (seq1Local.length() < i) {
+                    bw.write(position1Line + "\n");
+                    bw.write(seq1Line + "\n");
+                    bw.write(symbolLine + "\n");
+                    bw.write(seq2Line + "\n");
+                    bw.write(position2Line + "\n");
+                    break;
+                }
+                if (seq1Local.charAt(i - 1) != '-') {
+                    seq1Position++;
+                }
+                if (seq2Local.charAt(i - 1) != '-') {
+                    seq2Position++;
+                }
+                position1Line.append(String.format("% 4d", seq1Position)).append("  ");
+                seq1Line.append("     ").append(seq1Local.charAt(i - 1));
+                if (seq1Local.charAt(i - 1) == seq2Local.charAt(i - 1)) {
+                    symbolLine.append("     |");
+                } else if (seq1Local.charAt(i - 1) == '-' || seq2Local.charAt(i - 1) == '-') {
+                    symbolLine.append("      ");
+                } else {
+                    symbolLine.append("     :");
+                }
+                seq2Line.append("     ").append(seq2Local.charAt(i - 1));
+                position2Line.append(String.format("% 4d", seq2Position)).append("  ");
+            }
+            bw.newLine();
+            bw.write("----------------------------------------------\n");
         } catch (Exception e) {
-            System.err.println("Error parsing arguments: " + e.getMessage());
+            System.err.println("Error writing results to file: " + e.getMessage());
         }
     }
 }
