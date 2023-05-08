@@ -52,7 +52,7 @@ public class Main {
                 .build()
         );
 
-        try (BufferedWriter bw = new BufferedWriter(new java.io.FileWriter("./resources/alignment.txt"))) {
+        try (BufferedWriter bw = new BufferedWriter(new java.io.FileWriter("alignment.txt"))) {
             // Setting up the command line parser
             CommandLineParser parser = new DefaultParser();
             CommandLine params = parser.parse(cliOptions, args);
@@ -60,8 +60,8 @@ public class Main {
             // Extracting the parameters from the command line for the smith waterman aligner
             String filenameQuery = params.getOptionValue("fp1");
             String filenameTarget = params.getOptionValue("fp2");
-            String querySequence = SimpleFastaReader.parseFastaFile(new File("./resources/" + filenameQuery)).get(0).getSequence();
-            String targetSequence = SimpleFastaReader.parseFastaFile(new File("./resources/" + filenameTarget)).get(0).getSequence();
+            String querySequence = SimpleFastaReader.parseFastaFile(new File(filenameQuery)).get(0).getSequence();
+            String targetSequence = SimpleFastaReader.parseFastaFile(new File(filenameTarget)).get(0).getSequence();
             int matchScore = Integer.parseInt(params.getOptionValue("masc"));
             int mismatchScore = Integer.parseInt(params.getOptionValue("misc"));
             int gapPenalty = Integer.parseInt(params.getOptionValue("gp"));
