@@ -71,6 +71,7 @@ public class Main {
             matchScore = Integer.parseInt(params.getOptionValue("masc"));
             mismatchScore = Integer.parseInt(params.getOptionValue("misc"));
             gapPenalty = Integer.parseInt(params.getOptionValue("gp"));
+            // Creating the smith waterman aligner with the given parameters
             SmithWatermanAligner smithWatermanAligner = new SmithWatermanAligner(matchScore, mismatchScore, gapPenalty, querySequence, targetSequence);
             int optimalScore = smithWatermanAligner.alignSequences();
             System.out.println("The optimal local alignment score for \"" + filenameQuery + "\" and \"" + filenameTarget + "\" is: " + optimalScore);
@@ -81,7 +82,14 @@ public class Main {
         }
     }
 
-
+    /**
+     * Writes the results of the smith waterman algorithm to a file
+     *
+     * @param filenameQuery  the filename of the query sequence
+     * @param filenameTarget the filename of the target sequence
+     * @param optimalScore   the optimal score of the alignment
+     * @param smithWatermanAligner the smith waterman aligner
+     */
     private static void writeResultsToFile(String filenameQuery, String filenameTarget, int optimalScore, SmithWatermanAligner smithWatermanAligner) {
         try (BufferedWriter bw = new BufferedWriter(new java.io.FileWriter("alignment.txt"))) {
             bw.write("The optimal local alignment score for \"" + filenameQuery + "\" and \"" + filenameTarget + "\" was calculated \n" +
@@ -102,6 +110,7 @@ public class Main {
             bw.write("----------------------------------------------\n");
             String seq1Loc = traceback.split("\n")[0];
             String seq2Loc = traceback.split("\n")[1];
+            // Count the number of matches, mismatches and gaps
             int gapCount = 0;
             int matchCount = 0;
             int mismatchCount = 0;
@@ -123,6 +132,7 @@ public class Main {
             bw.write("| indicates a match, : indicates a mismatch and a space indicates a gap. \n");
             bw.write("----------------------------------------------\n");
 
+            // Write out the alignment to the file
             writeOutAlignment(smithWatermanAligner, bw, traceback);
             bw.newLine();
             bw.write("----------------------------------------------\n");
@@ -143,6 +153,7 @@ public class Main {
         StringBuilder symbolLine = new StringBuilder("Symbol:    ");
         StringBuilder seq2Line = new StringBuilder("Sequence 2:");
         StringBuilder position2Line = new StringBuilder("Position 2:  ");
+        // Iterate through the alignment and extracting the corresponding position/sequence characters/symbol for matching etc.
         while (true) {
             i = i + 1;
             if (seq1Local.length() < i) {
@@ -159,6 +170,9 @@ public class Main {
             if (seq2Local.charAt(i - 1) != '-') {
                 seq2Position++;
             }
+            // Append the characters to the corresponding lines
+            // The format function is used to make sure the lines are aligned
+            // Every character is followed by 5 spaces
             position1Line.append(String.format("% 4d", seq1Position)).append("  ");
             seq1Line.append("     ").append(seq1Local.charAt(i - 1));
             if (seq1Local.charAt(i - 1) == seq2Local.charAt(i - 1)) {
