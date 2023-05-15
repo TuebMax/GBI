@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Assignment 03
@@ -20,7 +21,6 @@ public class NeedlemanWunsch {
 
     private final char[] sequence2;
 
-    // Define appropriate data structures to store DP/traceback matrix information.
     /**
      * Alignment matrix storing the local alignment scores.
      */
@@ -80,12 +80,15 @@ public class NeedlemanWunsch {
     private void calculateCell(int i, int j) {
         int match;
         if (this.sequence1[i - 1] == this.sequence2[j - 1]) {
+            // Special case for matching gaps.
             if (this.sequence1[i - 1] == '-') {
                 match = this.alignmentMatrix[i - 1][j - 1];
             } else {
+                // Match case
                 match = this.alignmentMatrix[i - 1][j - 1] + this.matchScore;
             }
         } else {
+            // Mismatch case
             match = this.alignmentMatrix[i - 1][j - 1] + this.mismatchScore;
         }
         int delete = this.alignmentMatrix[i - 1][j] - this.gapPenalty;
@@ -116,7 +119,8 @@ public class NeedlemanWunsch {
         return this.alignmentMatrix[sequence1.length][sequence2.length];
     }
 
-    public ArrayList<String> getAlignedSequences() {
+    // Changed method signature! Code smell: Declarations should use Java collection interfaces such as "List" rather than specific implementation classes such as "ArrayList"
+    public List<String> getAlignedSequences() {
         // Run traceback to obtain aligned sequences.
         StringBuilder alignmentStringS1 = new StringBuilder();
         StringBuilder alignmentStringS2 = new StringBuilder();

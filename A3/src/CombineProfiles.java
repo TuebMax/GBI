@@ -15,10 +15,12 @@ public class CombineProfiles {
 
     // Changed method signature! Since this method is supposed to align as stated above, the method need the parameters matchScore, mismatchScore and gapPenalty.
     public static List<String> combineAlignedSequences(List<String> profile1, List<String> profile2, int matchScore, int mismatchScore, int gapPenalty) {
+        // Choose the first sequence from both profiles and align them.
         String sequence1 = profile1.get(0);
         String sequence2 = profile2.get(0);
         NeedlemanWunsch nw1 = new NeedlemanWunsch(matchScore, mismatchScore,gapPenalty, sequence1, sequence2);
         nw1.alignSequences();
+        // Print the alignment score and the alignment.
         System.out.println("Aligned the first sequence from both profiles");
         System.out.println("Alignment score: " + nw1.getAlignmentScore());
         System.out.println("Alignment:");
@@ -27,13 +29,13 @@ public class CombineProfiles {
         }
         System.out.println("-------------------------");
 
-
+        // Adjust the profiles to the new alignment.
         String alignedSequence1 = nw1.getAlignedSequences().get(0);
         String alignedSequence2 = nw1.getAlignedSequences().get(1);
         adjustProfile(profile1, alignedSequence1);
         adjustProfile(profile2, alignedSequence2);
 
-
+        // Combine the profiles.
         List<String> newProfile = new ArrayList<>();
         newProfile.addAll(profile1);
         newProfile.addAll(profile2);
@@ -41,6 +43,7 @@ public class CombineProfiles {
     }
 
     private static void adjustProfile(List<String> profile, String alignedSequence) {
+        // Insert the new gaps from the aligned sequence and add them into every sequence in the profile.
         for(int i = 0; i < alignedSequence.length(); i++){
             if(alignedSequence.charAt(i) == '-' ){
                 if(i >= profile.get(0).length()){
