@@ -37,36 +37,21 @@ public class ProgressiveAlignment {
      *
      * @param sequencesToAlign {@link ArrayList} of {@link String} objects representing sequences to align.
      * @param    {@link Object} used to chose sequence order for alignment.
-     * @return {@link ArrayList} of {@link String} objects representing an MSA.
+     * @return {@link List} of {@link String} objects representing an MSA.
      */
-    public List<String> alignSequences(List<String> sequencesToAlign) {
+    public List<String> alignSequences(List<String> sequencesToAlign, ProfileSet guideStructure) {
         /*
         Implement the pseudocode from Chapter 5 (p.68) here. You will have to implement a data structure that is used to select the order in
         which sequences are to be aligned (for this change the Type of the guideStructure parameter from Object to your implementation.
          */
-        Set<List<String>> alignments = new HashSet<>();
 
-        for (String sequence: sequencesToAlign) {
-            alignments.add(new ArrayList<>(List.of(sequence)));
+        ProfileSet guideStructureParent = new ProfileSet();
+        guideStructureParent.add(guideStructure);
+
+        while (!guideStructureParent.isEmpty()) {
+            alignProfiles(guideStructureParent.iterator().next(), guideStructureParent);
         }
-
-        while (alignments.size() > 1) {
-            List<String> subAlignment1 = alignments.iterator().next();
-            alignments.remove(subAlignment1);
-            List<String> subAlignment2 = alignments.iterator().next();
-            alignments.remove(subAlignment2);
-
-            NeedlemanWunsch nw = new NeedlemanWunsch(this.scoringMatrix, this.gapPenalty, subAlignment1.get(0), subAlignment2.get(0));
-            nw.alignSequences();
-            adjustProfile(subAlignment1, nw.getAlignedSequences().get(0));
-            adjustProfile(subAlignment2, nw.getAlignedSequences().get(1));
-            List<String> newAlignment = new ArrayList<>();
-            newAlignment.addAll(subAlignment1);
-            newAlignment.addAll(subAlignment2);
-            alignments.add(newAlignment);
-        }
-
-        return new ArrayList<>(alignments.iterator().next());
+        return guideStructureParent.getProfile1();
     }
 
     private void adjustProfile(List<String> profile, String alignedSequence) {
@@ -83,6 +68,27 @@ public class ProgressiveAlignment {
                 }
             }
         }
+    }
+
+    private void alignProfiles(ProfileSet child, ProfileSet parent){
+        if(!child.isEmpty()){
+            alignProfiles(child.iterator().next(), child);
+            return;
+        }
+        List<String> subAlignment1 = child.getProfile1();
+        List<String> subAlignment2 = child.getProfile2();
+        if(subAlignment1 == null || subAlignment2 == null){
+            throw new UnsupportedOperationException("Cannot align profile set");
+        }
+        parent.remove(child);
+        NeedlemanWunsch nw = new NeedlemanWunsch(this.scoringMatrix, this.gapPenalty, subAlignment1.get(0), subAlignment2.get(0));
+        nw.alignSequences();
+        adjustProfile(subAlignment1, nw.getAlignedSequences().get(0));
+        adjustProfile(subAlignment2, nw.getAlignedSequences().get(1));
+        List<String> newAlignment = new ArrayList<>();
+        newAlignment.addAll(subAlignment1);
+        newAlignment.addAll(subAlignment2);
+        parent.setProfile(newAlignment);
     }
 
 }

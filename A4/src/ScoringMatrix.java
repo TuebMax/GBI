@@ -22,7 +22,6 @@ public class ScoringMatrix {
         // read in the scoring matrix from the given filepath
         scoringMat = new HashMap<>();
         readInScoringMatrix(filepath);
-
     }
 
     private void readInScoringMatrix(String filepath) {

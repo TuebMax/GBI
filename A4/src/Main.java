@@ -72,7 +72,25 @@ public class Main {
             sequencesAsString.add(fasta.getSequence());
         }
         ProgressiveAlignment progressiveAlignment = new ProgressiveAlignment(scoringMatrix, gapPenalty);
-        List<String> combinedSequences = progressiveAlignment.alignSequences(sequencesAsString);
+
+        ProfileSet left1 = new ProfileSet();
+        ProfileSet left2 = new ProfileSet();
+        ProfileSet left3 = new ProfileSet();
+        ProfileSet right2 = new ProfileSet();
+        left3.setProfile(new ArrayList<>(List.of(sequencesAsString.get(0))));
+        left3.setProfile(new ArrayList<>(List.of(sequencesAsString.get(1))));
+        left2.setProfile(new ArrayList<>(List.of(sequencesAsString.get(2))));
+        left2.add(left3);
+        left1.add(left2);
+        right2.setProfile(new ArrayList<>(List.of(sequencesAsString.get(3))));
+        right2.setProfile(new ArrayList<>(List.of(sequencesAsString.get(4))));
+        left1.add(right2);
+
+        ProfileSet root = new ProfileSet();
+        root.setProfile(new ArrayList<>(List.of(sequencesAsString.get(5))));
+        root.add(left1);
+
+        List<String> combinedSequences = progressiveAlignment.alignSequences(sequencesAsString, root);
 
         // Print the multiple sequence alignment.
         System.out.println("Multiple sequence alignment:");
