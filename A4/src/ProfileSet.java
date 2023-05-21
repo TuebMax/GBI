@@ -1,6 +1,12 @@
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Assignment 04
+ * Authors:Christopher Kolberg, Maximilian Wilhelm
+ * <p>
+ * A data structure to store the different profiles of a multiple sequence alignment in their correct order.
+ */
 public class ProfileSet extends HashSet<ProfileSet> {
     public List<String> profile1 = null;
     public List<String> profile2 = null;

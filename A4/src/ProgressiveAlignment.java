@@ -36,14 +36,10 @@ public class ProgressiveAlignment {
      * Method to align a set of sequences using progressive alignment. (Changed method signature to not be static)
      *
      * @param sequencesToAlign {@link ArrayList} of {@link String} objects representing sequences to align.
-     * @param    {@link Object} used to chose sequence order for alignment.
+     * @param guideStructure   {@link ProfileSet} used to chose sequence order for alignment.
      * @return {@link List} of {@link String} objects representing an MSA.
      */
     public List<String> alignSequences(List<String> sequencesToAlign, ProfileSet guideStructure) {
-        /*
-        Implement the pseudocode from Chapter 5 (p.68) here. You will have to implement a data structure that is used to select the order in
-        which sequences are to be aligned (for this change the Type of the guideStructure parameter from Object to your implementation.
-         */
 
         ProfileSet guideStructureParent = new ProfileSet();
         guideStructureParent.add(guideStructure);

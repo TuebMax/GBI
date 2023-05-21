@@ -46,6 +46,7 @@ public class Main {
         // Parse the command line arguments.
         try {
             scoringMatrixFilepath = params.getOptionValue("sm");
+            // Reading in the scoring matrix.
             scoringMatrix = new ScoringMatrix(scoringMatrixFilepath);
             sequencesFilepath = params.getOptionValue("sq");
             gapPenalty = Integer.parseInt(params.getOptionValue("gp"));
@@ -55,24 +56,15 @@ public class Main {
             System.exit(-1);
         }
 
-
-
-
-
-        // Call all functions from here and organise the output.
-        /*
-        - Read in the fasta entries to build an MSA from.
-        - Read in the scoring matrix to use for the progressive alignment.
-        - Build the data structure that is used to guide the alignment process, i.e., either manually (d) or by parsing a generalized guide
-        tree structure (d').
-        - Run the progressive alignment by supplying the input sequences, scoring matrix, gap penalty and guide data structure.
-         */
         List<String> sequencesAsString = new ArrayList<>();
         for (Fasta fasta : sequences) {
             sequencesAsString.add(fasta.getSequence());
         }
+        // Create the progressive alignment object.
         ProgressiveAlignment progressiveAlignment = new ProgressiveAlignment(scoringMatrix, gapPenalty);
 
+
+        // Build the guide tree structure.
         ProfileSet left1 = new ProfileSet();
         ProfileSet left2 = new ProfileSet();
         ProfileSet left3 = new ProfileSet();
@@ -90,6 +82,7 @@ public class Main {
         root.setProfile(new ArrayList<>(List.of(sequencesAsString.get(5))));
         root.add(left1);
 
+        // Run the progressive alignment.
         List<String> combinedSequences = progressiveAlignment.alignSequences(sequencesAsString, root);
 
         // Print the multiple sequence alignment.

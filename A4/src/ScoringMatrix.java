@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class ScoringMatrix {
     }
 
     private void readInScoringMatrix(String filepath) {
-        try (BufferedReader bufferedReader = new BufferedReader(new java.io.FileReader(filepath))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filepath))) {
             String line;
             String[] header = bufferedReader.readLine().split("\t");
             while ((line = bufferedReader.readLine()) != null) {
