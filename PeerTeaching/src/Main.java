@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
 
         /**
-         * There should not be any red errors in the output console.
+         * There should not be a Stack Trace in the output console.
          * Catch every Exception and make it clear which Exception it is and why it got thrown.
          */
 
@@ -52,7 +52,7 @@ public class Main {
         }
 
 
-        // For evry FastaSequence in the fastaSequenceList count following SequenceSections:
+        // For every FastaSequence in the fastaSequenceList count following SequenceSections:
         // "GTG", "CC", "AGATA"
         // Catch Exceptions
         try {
@@ -69,7 +69,15 @@ public class Main {
             System.out.println("The SequenceSection is invalid!: " + e.getMessage());
         }
 
+        // Now fill the fastaStorage Map
+        for (FastaSequence sequence: fastaStorage.getFastaSequenceList()) {
 
+            for (Map.Entry<String, Integer> entry : sequence.getSectionCount().entrySet()) {
+                // fastaStorage.storeInFastaMap(sequence, );
+            }
+        }
+
+        // Optional: Fancy Outprint
 
     }
 }
