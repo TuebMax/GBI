@@ -6,9 +6,9 @@ import java.util.Map;
 
 /**
  * Assignment 04
- * Authors:YOUR NAMES HERE
+ * Authors: Christopher Kolberg, Maximilian Wilhelm
  * <p>
- * Do not forget to add a class documentation.
+ * Class to read in and store scoring matrices.
  */
 public class ScoringMatrix {
 

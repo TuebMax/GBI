@@ -1,13 +1,11 @@
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Assignment 04
- * Authors:YOUR NAMES HERE
+ * Authors: Christopher Kolberg, Maximilian Wilhelm
  * <p>
- * Do not forget to add a class documentation.
+ * Class to align a set of sequences using progressive alignment.
  */
 public class ProgressiveAlignment {
 
@@ -41,12 +39,15 @@ public class ProgressiveAlignment {
      */
     public List<String> alignSequences(List<String> sequencesToAlign, ProfileSet guideStructure) {
 
+        // Create a set of profiles which is the parent of the given guide structure.
         ProfileSet guideStructureParent = new ProfileSet();
         guideStructureParent.add(guideStructure);
 
+        // While there are still profiles to align, align them.
         while (!guideStructureParent.isEmpty()) {
             alignProfiles(guideStructureParent.iterator().next(), guideStructureParent);
         }
+        // Return the aligned profile which is the first profile in the guide structure.
         return guideStructureParent.getProfile1();
     }
 
@@ -67,23 +68,30 @@ public class ProgressiveAlignment {
     }
 
     private void alignProfiles(ProfileSet child, ProfileSet parent){
+        // If the child is not empty, first align the child.
         if(!child.isEmpty()){
             alignProfiles(child.iterator().next(), child);
             return;
         }
+        // If the child is empty and thus contains no ProfileSets, it should two profiles.
+        // Use the NeedlemanWunsch algorithm to align the two profiles. Which should be filled in profile1 and profile2!
         List<String> subAlignment1 = child.getProfile1();
         List<String> subAlignment2 = child.getProfile2();
+        // Assert that the sub-alignments are not null.
         if(subAlignment1 == null || subAlignment2 == null){
             throw new UnsupportedOperationException("Cannot align profile set");
         }
+        // Remove the child from the parent and add the new alignment to the parent.
         parent.remove(child);
         NeedlemanWunsch nw = new NeedlemanWunsch(this.scoringMatrix, this.gapPenalty, subAlignment1.get(0), subAlignment2.get(0));
         nw.alignSequences();
+        // Adjust the profiles (add gaps) to the new alignment.
         adjustProfile(subAlignment1, nw.getAlignedSequences().get(0));
         adjustProfile(subAlignment2, nw.getAlignedSequences().get(1));
         List<String> newAlignment = new ArrayList<>();
         newAlignment.addAll(subAlignment1);
         newAlignment.addAll(subAlignment2);
+        // Add the new alignment to the parent in the corresponding field for "finished" profiles.
         parent.setProfile(newAlignment);
     }
 

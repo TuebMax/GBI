@@ -8,7 +8,7 @@ import java.util.List;
  * Assignment 04
  * Authors:Christopher Kolberg, Maximilian Wilhelm
  * <p>
- * Do not forget to add a class documentation.
+ * Class to read in fasta files.
  */
 public class FastaReader {
     public List<Fasta> readInFasta(String filepath) {

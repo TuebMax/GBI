@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * Assignment 04
- * Authors:YOUR NAMES HERE
+ * Authors: Christopher Kolberg, Maximilian Wilhelm
  * <p>
  * Class implementing the Needleman-Wunsch algorithm for global pairwise sequence alignment. A scoring matrix is used to
  * get the match/mismatch scores for each pair of characters. The algorithm is implemented using dynamic programming.
