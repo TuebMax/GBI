@@ -1,5 +1,5 @@
-import java.io.FileNotFoundException;
-import java.io.IOException;
+package GroupCoding;
+
 import java.util.Map;
 
 public class Main {
@@ -11,16 +11,16 @@ public class Main {
          */
 
 
-        // Creates a new FastaStorage Object
+        // Creates a new GroupCoding.FastaStorage Object
         FastaReader fastaReader = new FastaReader();
-        // TODO (ExceptionHandling): Read in the "fasta.fasta" file using setFilePath of FastaReader
-        // TODO (ExceptionHandling): Catch Exceptions of FastaReader
+        // TODO (ExceptionHandling): Read in the "fasta.fasta" file using setFilePath of GroupCoding.FastaReader
+        // TODO (ExceptionHandling): Catch Exceptions of GroupCoding.FastaReader
         // TODO ends here
 
-        // Creates a new FastaStorage Object
+        // Creates a new GroupCoding.FastaStorage Object
         FastaStorage fastaStorage = new FastaStorage();
-        // TODO (ExceptionHandling): Catch Exceptions of FastaReader
-        //  Hint: Look at the FastaReader Class
+        // TODO (ExceptionHandling): Catch Exceptions of GroupCoding.FastaReader
+        //  Hint: Look at the GroupCoding.FastaReader Class
 
         String line;
         FastaSequence fastaSequence = new FastaSequence("", "");
@@ -29,8 +29,8 @@ public class Main {
             if (line.startsWith(">")) {
                 if (!stringBuilder.isEmpty()) {
                     fastaSequence.setSequence(stringBuilder.toString());
-                    // TODO (ExceptionHandling): Store the FastaSequence in List.
-                    //  Hint: Look at the FastaStorage Methods.
+                    // TODO (ExceptionHandling): Store the GroupCoding.FastaSequence in List.
+                    //  Hint: Look at the GroupCoding.FastaStorage Methods.
                     stringBuilder = new StringBuilder();
                 }
                 fastaSequence = new FastaSequence(line.trim(), "");
@@ -42,15 +42,15 @@ public class Main {
 
         fastaSequence.setSequence(stringBuilder.toString());
 
-        // TODO (ExceptionHandling): Store the FastaSequence in List.
-        //  Hint: Look at the FastaStorage Methods.
+        // TODO (ExceptionHandling): Store the GroupCoding.FastaSequence in List.
+        //  Hint: Look at the GroupCoding.FastaStorage Methods.
         // TODO ends here
 
 
-        // TODO (ExceptionHandling): Iterate over SequenceList and count Sections using countSection Method in FastaSequence
+        // TODO (ExceptionHandling): Iterate over SequenceList and count Sections using countSection Method in GroupCoding.FastaSequence
         //  e.g.: "GTG", "CC", "AGATA"
         // TODO (ExceptionHandling): Catch Exceptions
-        //  Hint: Look at the countSection Method in FastaSequence
+        //  Hint: Look at the countSection Method in GroupCoding.FastaSequence
         // TODO ends here
 
         for (FastaSequence sequence: fastaStorage.getFastaSequenceList()) {

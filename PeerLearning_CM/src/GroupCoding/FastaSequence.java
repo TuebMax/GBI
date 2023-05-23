@@ -1,3 +1,5 @@
+package GroupCoding;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +12,7 @@ public class FastaSequence {
     // Stores Section Count of this Object
     private Map<String, Integer> sectionCount;
 
-    // Creates a FastaSequence Object
+    // Creates a GroupCoding.FastaSequence Object
     public FastaSequence(String header, String sequence){
         // TODO (DataStructures): Initialize Attributes with the corresponding Objects
     }

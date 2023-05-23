@@ -1,3 +1,5 @@
+package GroupCoding;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -6,7 +8,7 @@ import java.io.IOException;
 public class FastaReader {
     BufferedReader bufferedReader;
 
-    // Creates new FastaReader Object
+    // Creates new GroupCoding.FastaReader Object
     public FastaReader() {
     }
 
