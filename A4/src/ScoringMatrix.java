@@ -12,11 +12,6 @@ import java.util.Map;
  */
 public class ScoringMatrix {
 
-    /*
-    Add class implementation to store scoring matrices. A scoring matrix should be read from a .tsv file and be capable of returning the
-    score stored for two characters. Catch cases in which a score is requested, but not stored for two characters. You may want to use
-    Java's Map data structures for the implementation.
-     */
     private final Map<Character, Map<Character, Integer>> scoringMat;
 
     public ScoringMatrix(String filepath) {
@@ -28,8 +23,10 @@ public class ScoringMatrix {
     private void readInScoringMatrix(String filepath) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filepath))) {
             String line;
+            // Split at tabs since the scoring matrix is tab separated
             String[] header = bufferedReader.readLine().split("\t");
             while ((line = bufferedReader.readLine()) != null) {
+                // Split at tabs since the scoring matrix is tab separated
                 String[] lineSplit = line.split("\t");
                 Map<Character, Integer> row = new HashMap<>();
                 for (int i = 1; i < lineSplit.length; i++) {
@@ -44,10 +41,10 @@ public class ScoringMatrix {
     }
 
     public int getScore(char a, char b) {
+        // Return the score for the given characters otherwise throw an exception
         if (scoringMat.containsKey(a) && scoringMat.get(a).containsKey(b)) {
             return scoringMat.get(a).get(b);
         }
-
         throw new IllegalArgumentException("No score stored for " + a + " and " + b);
     }
 }
