@@ -1,39 +1,56 @@
 import org.apache.commons.cli.*;
 
-import java.io.IOException;
-
 /**
  * Assignment 05
- * Authors:YOUR NAMES HERE
+ * Authors:Maximilian Wilhelm, Christopher Kolberg
  */
 public class Main {
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) throws ParseException {
         System.out.println("GBI - Exercise Sheet 5");
         // For command line interface parsing you can use the commons-cli package as follows (however, feel free to use any other approach):
         Options cliOptions = new Options();
-        cliOptions.addOption(Option.builder().option("p1") // Short option name set to 'p1'.
-                .longOpt("parameter1") // Long option name set to 'parameter1'.
+        cliOptions.addOption(Option.builder().option("ori") // Short option name set to 'p1'.
+                .longOpt("distOriginal") // Long option name set to 'parameter1'.
                 .hasArg(true) // Parameter has an argument.
                 .required(true) // Parameter is required.
-                .desc("CLI parameter example") // Description of the parameter.
+                .desc("Distances original matrix") // Description of the parameter.
                 .build() // Build the option.
         );
-        /*
-        The built option can be passed via cli either with -p1 SOME_VALUE or --parameter1 SOME_VALUE
-        You can add the parameter via the Run Configuration > Program Arguments field.
-         */
-        CommandLineParser parser = new DefaultParser(); // Init. parser object.
-        CommandLine params = parser.parse(cliOptions, args); // Parse built cli options from args.
-        // The option value can be retrieved as follows; By default a String type is returned. Ensure to cast to correct type.
-        String p1 = params.getOptionValue("p1");
-        // If the option was not set (and is not required), null is returned.
-        if (p1 == null) {
-            p1 = "SOME_VALUE"; // This way you can ensure to set a default value.
+        cliOptions.addOption(Option.builder().option("t1")
+                .longOpt("tree1")
+                .hasArg(true)
+                .required(true)
+                .desc("Distance matrix derived from tree 1")
+                .build()
+        );
+        cliOptions.addOption(Option.builder().option("t2")
+                .longOpt("tree2")
+                .hasArg(true)
+                .required(true)
+                .desc("Distance matrix derived from tree 2")
+                .build()
+        );
+        CommandLineParser parser = new DefaultParser();
+        CommandLine params = parser.parse(cliOptions, args);
+        try {
+            params.getOptionValue("ori");
+            params.getOptionValue("t1");
+            params.getOptionValue("t2");
+        } catch (Exception e) {
+            System.out.println("Missing parameters");
+            System.exit(1);
         }
-        // Call all functions from here and organise the output.
-        /*
-        - Read in the distance matrices to compute the CCC score from.
-        - Compute the CCC score for the respective distance matrix pairs as described on the assignment sheet and print the results to console.
-         */
+        String originalMatrixPath = params.getOptionValue("ori");
+        String tree1MatrixPath = params.getOptionValue("t1");
+        String tree2MatrixPath = params.getOptionValue("t2");
+
+        DistanceMatrix originalMatrix = new DistanceMatrix(originalMatrixPath);
+        DistanceMatrix tree1Matrix =  new DistanceMatrix(tree1MatrixPath);
+        DistanceMatrix tree2Matrix =  new DistanceMatrix(tree2MatrixPath);
+        double cccScore1 = CCC.computeCCC(originalMatrix, tree1Matrix);
+        double cccScore2 = CCC.computeCCC(originalMatrix, tree2Matrix);
+
+        System.out.println("CCC score for tree 1: " + cccScore1);
+        System.out.println("CCC score for tree 2: " + cccScore2);
     }
 }

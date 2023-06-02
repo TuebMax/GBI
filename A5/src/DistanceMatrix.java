@@ -1,15 +1,67 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Assignment 05
- * Authors:YOUR NAMES HERE
+ * Authors:Maximilian Wilhelm, Christopher Kolberg
  * <p>
- * Do not forget to add a class documentation.
+ * Class to read in and store scoring matrices.
  */
 public class DistanceMatrix {
 
-    /*
-    Add class implementation to store distance matrices. A distance matrix should be read from a .dist file and be capable of returning the
-    distance stored for two entries. Catch cases in which a distance is requested, but not stored for two entries. You may want to use
-    Java's Map data structures for the implementation. Feel free to use your implementation of the ScoringMatrix class from Assignment 04.
-     */
+    private final Map<String, Map<String, Double>> distanceMat;
+
+    public DistanceMatrix(String filepath) {
+        // read in the scoring matrix from the given filepath
+        distanceMat = new HashMap<>();
+        readInDistanceMatrix(filepath);
+    }
+
+    private void readInDistanceMatrix(String filepath) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filepath))) {
+            String line;
+            // Split at tabs since the scoring matrix is tab separated
+            String[] header = bufferedReader.readLine().split("\t");
+            while ((line = bufferedReader.readLine()) != null) {
+                // Split at tabs since the scoring matrix is tab separated
+                String[] lineSplit = line.split("\t");
+                Map<String, Double> row = new HashMap<>();
+                for (int i = 1; i < lineSplit.length; i++) {
+                    row.put(header[i], Double.parseDouble(lineSplit[i]));
+                }
+                distanceMat.put(lineSplit[0], row);
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading in distance matrix file");
+            System.exit(-1);
+        }
+    }
+
+    public List<String> getKeys() {
+        return new ArrayList<>(distanceMat.keySet());
+    }
+
+    public double getAverage(){
+        double average = 0;
+        for (Map.Entry<String, Map<String, Double>> entry1 : distanceMat.entrySet()) {
+            for (Map.Entry<String, Double> entry2 : entry1.getValue().entrySet()) {
+                average += entry2.getValue();
+            }
+        }
+        return average / (distanceMat.size() * distanceMat.size());
+    }
+
+    public double getDistance(String a, String b) {
+        // Return the score for the given characters otherwise throw an exception
+        if (distanceMat.containsKey(a) && distanceMat.get(a).containsKey(b)) {
+            return distanceMat.get(a).get(b);
+        }
+        throw new IllegalArgumentException("No score stored for " + a + " and " + b);
+    }
 
 }
