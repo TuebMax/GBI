@@ -15,6 +15,9 @@ public class FastaSequence {
     // Creates a GroupCoding.FastaSequence Object
     public FastaSequence(String header, String sequence){
         // TODO (DataStructures): Initialize Attributes with the corresponding Objects
+        this.header = header;
+        this.sequence = sequence;
+        this.sectionCount = new HashMap<>();
     }
 
     // Getter-Methods
@@ -41,6 +44,11 @@ public class FastaSequence {
     // Define Method to insert Sequences Section into HashMap
     public void insertSequenceSection(String section){
         // TODO (DataStructures): Insert Section into Map. If already exists -> +1
+        if (this.sectionCount.containsKey(section)) {
+            this.sectionCount.put(section, (this.sectionCount.get(section)+1));
+        } else {
+            this.sectionCount.put(section, 1);
+        }
     }
 
     // Define Method: Search for SequenceSections and count them. Store in Map
@@ -57,6 +65,7 @@ public class FastaSequence {
             if (index != -1)
             {
                 // TODO (DataStructures): Insert Section into Map
+                insertSequenceSection(section);
                 index += section.length();
             }
             else {
