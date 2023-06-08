@@ -47,13 +47,17 @@ public class DistanceMatrix {
     }
 
     public double getAverage(){
+        // Calculate the average score of the scoring matrix; only consider the upper triangle of the matrix
         double average = 0;
-        for (Map.Entry<String, Map<String, Double>> entry1 : distanceMat.entrySet()) {
-            for (Map.Entry<String, Double> entry2 : entry1.getValue().entrySet()) {
-                average += entry2.getValue();
+        int counter = 0;
+        for (int i = 0; i < distanceMat.size(); i++) {
+            for (int j = i + 1; j < distanceMat.size(); j++) {
+                average += distanceMat.get(getKeys().get(i)).get(getKeys().get(j));
+                counter++;
             }
         }
-        return average / (distanceMat.size() * distanceMat.size());
+        assert counter != 0;
+        return average / counter;
     }
 
     public double getDistance(String a, String b) {

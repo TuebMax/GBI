@@ -40,6 +40,8 @@ public class Main {
             System.out.println("Missing parameters");
             System.exit(1);
         }
+
+        // Read the distance matrices from the files specified in the command line arguments.
         String originalMatrixPath = params.getOptionValue("ori");
         String tree1MatrixPath = params.getOptionValue("t1");
         String tree2MatrixPath = params.getOptionValue("t2");
@@ -47,9 +49,12 @@ public class Main {
         DistanceMatrix originalMatrix = new DistanceMatrix(originalMatrixPath);
         DistanceMatrix tree1Matrix =  new DistanceMatrix(tree1MatrixPath);
         DistanceMatrix tree2Matrix =  new DistanceMatrix(tree2MatrixPath);
+
+        // Compute the cophenetic correlation coefficient (CCC) for the two trees.
         double cccScore1 = CCC.computeCCC(originalMatrix, tree1Matrix);
         double cccScore2 = CCC.computeCCC(originalMatrix, tree2Matrix);
 
+        // Print the CCC scores.
         System.out.println("CCC score for tree 1: " + cccScore1);
         System.out.println("CCC score for tree 2: " + cccScore2);
     }
