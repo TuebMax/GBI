@@ -1,0 +1,7 @@
+Module	Section	Sample Name	Source
+FastQC	all_sections	run11	D:\Uni\Tübingen\A07\material\Task 3c\run11_fastqc.zip
+FastQC	all_sections	run12	D:\Uni\Tübingen\A07\material\Task 3c\run12_fastqc.zip
+FastQC	all_sections	run21	D:\Uni\Tübingen\A07\material\Task 3c\run21_fastqc.zip
+FastQC	all_sections	run22	D:\Uni\Tübingen\A07\material\Task 3c\run22_fastqc.zip
+FastQC	all_sections	run31	D:\Uni\Tübingen\A07\material\Task 3c\run31_fastqc.zip
+FastQC	all_sections	run32	D:\Uni\Tübingen\A07\material\Task 3c\run32_fastqc.zip
