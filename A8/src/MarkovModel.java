@@ -1,11 +1,10 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
  * Assignment 08
- * Authors:YOUR NAMES HERE
+ * Authors:Maximilian Wilhelm and Christopher Kolberg
  * <p>
  * Simple implementation of a Markov model. You can implement all tasks asked for in the assignment in this class skeleton.
  */
@@ -139,20 +138,28 @@ public class MarkovModel {
      */
     public String simulate() {
         StringBuilder markovChain = new StringBuilder();
+        // Set start and end state position
         int beginStatePos = this.states.indexOf("*");
         int endStatePos = this.states.indexOf("+");
+        // set the current state to the begin state
         int currentStatePos = beginStatePos;
-        Random rnd = new Random();
+        // Append begin state to chain
         markovChain.append(this.states.get(currentStatePos));
+        Random rnd = new Random();
 
 
         while (currentStatePos != endStatePos) {
+            // Get a random real number between 0 and 1
             double randomChoice = rnd.nextDouble(0f, 1f);
             double sum = 0;
+            // Check which state will be the next by summing up the probabilities for the current line
+            // until the sum is greater than the chosen random number
             for (int i = 0; i < this.noStates; i++) {
                 sum += this.transitionMatrix[currentStatePos][i];
                 if (sum > randomChoice) {
+                    // Set the next state to the chosen one
                     currentStatePos = i;
+                    // Append the chosen one to the chain
                     markovChain.append(this.states.get(currentStatePos));
                     break;
                 }
@@ -173,10 +180,13 @@ public class MarkovModel {
         double logP = 0.0;
         for(int i = 0; i < markovChain.length()-1; i++){
             try {
+                // Score each pair of subsequent characters in the markov chain wrt the transition probability
                 logP += Math.log10(getTransitionProbability(markovChain.substring(i, i+1), markovChain.substring(i+1, i+2)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+
         }
         return logP;
     }
