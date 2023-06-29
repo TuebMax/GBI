@@ -144,7 +144,6 @@ public class MarkovModel {
         // set the current state to the begin state
         int currentStatePos = beginStatePos;
         // Append begin state to chain
-        markovChain.append(this.states.get(currentStatePos));
         Random rnd = new Random();
 
 
@@ -165,7 +164,7 @@ public class MarkovModel {
                 }
             }
         }
-        return markovChain.toString();
+        return markovChain.substring(0, markovChain.length()-1);
     }
 
 
@@ -176,8 +175,9 @@ public class MarkovModel {
      * @param markovChain The string of states
      * @return logP the log-probability for markovChain given the current model.
      */
-    public double getLogProbability(String markovChain) {
+    public double getLogProbability(String markovChain) throws Exception {
         double logP = 0.0;
+        logP += Math.log10(getTransitionProbability("*", markovChain.substring(0, 1)));
         for(int i = 0; i < markovChain.length()-1; i++){
             try {
                 // Score each pair of subsequent characters in the markov chain wrt the transition probability
@@ -186,8 +186,8 @@ public class MarkovModel {
                 e.printStackTrace();
             }
 
-
         }
+        logP += Math.log10(getTransitionProbability(markovChain.substring(markovChain.length()-1), "+"));
         return logP;
     }
 

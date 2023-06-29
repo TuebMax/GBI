@@ -63,5 +63,6 @@ public class Main {
             System.out.println("Loaded markov chain log probability:");
             System.out.println(markovModel.getLogProbability(markovChain));
         }
+
     }
 }
