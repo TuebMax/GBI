@@ -1,7 +1,9 @@
 import org.apache.commons.cli.*;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 /**
@@ -28,17 +30,22 @@ public class Main {
         );
         CommandLineParser parser = new DefaultParser(); // Init. parser object.
         CommandLine params = parser.parse(cliOptions, args); // Parse built cli options from args.
-        /*
-         * TODO: Adjust parameters according to your changes in the other classes!
-         */
         File hmmFile = new File(params.getOptionValue("hmm"));
         File sequencesFile = new File(params.getOptionValue("seqs"));
         ArrayList<Fasta> sequencesToDecode = FastaReader.readFasta(sequencesFile);
         HMM hmm = HMM.read(new FileReader(hmmFile));
         Viterbi viterbi = new Viterbi();
-        for (Fasta fasta : sequencesToDecode) {
-            viterbi.runViterbi(fasta.sequence(), hmm, true);
-            System.out.println(viterbi.print());
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))){
+            for (Fasta fasta : sequencesToDecode) {
+                viterbi.runViterbi(fasta.sequence(), hmm, true);
+                System.out.println(viterbi.print());
+                writer.write(fasta.header());
+                writer.newLine();
+                writer.write(viterbi.print());
+                writer.newLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
