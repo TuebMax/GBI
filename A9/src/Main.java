@@ -35,6 +35,7 @@ public class Main {
         ArrayList<Fasta> sequencesToDecode = FastaReader.readFasta(sequencesFile);
         HMM hmm = HMM.read(new FileReader(hmmFile));
         Viterbi viterbi = new Viterbi();
+        // Run Viterbi algorithm for each sequence in the input file. Write results to output file.
         try(BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))){
             for (Fasta fasta : sequencesToDecode) {
                 viterbi.runViterbi(fasta.sequence(), hmm, true);
