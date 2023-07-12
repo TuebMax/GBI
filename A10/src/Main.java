@@ -5,7 +5,7 @@ import org.biojava.nbio.genome.parsers.gff.GFF3Reader;
 
 /**
  * Assignment 10
- * Authors: YOUR NAMES HERE
+ * Authors: Christopher Kolberg & Maximilian Wilhelm
  */
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -32,24 +32,38 @@ public class Main {
                         .desc("GFF output from second method")
                         .build()
         );
+        cliOptions.addOption(Option.builder().option("seq").longOpt("sequence")
+                .hasArg(true)
+                .required(false)
+                .desc("Fasta file containing the genome sequence")
+                .build()
+        );
 
 
         CommandLineParser parser = new DefaultParser(); // Init. parser object.
         CommandLine params = parser.parse(cliOptions, args); // Parse built cli options from args.
 
         FeatureList groundtruth = GFF3Reader.read(params.getOptionValue("gt"));
-        FeatureList gff1 = GFF3Reader.read(params.getOptionValue("gff1"));
-        FeatureList gff2 = GFF3Reader.read(params.getOptionValue("gff2"));
+        FeatureList gff1 = GFFReader.read(params.getOptionValue("gff1"));
+        FeatureList gff2 = GFFReader.read(params.getOptionValue("gff2"));
 
-        System.out.println(gff1.get(0).location().end());
+        // Length of the sequence (default: 3397754 (given in the exercise sheet))
+        int seqLength = 3397754;
+        try{
+            Fasta fasta = new FastaReader().readInFasta(params.getOptionValue("seq")).get(0);
+            seqLength = fasta.getSequence().length();
+        }catch (Exception e){
+            System.out.println("No sequence file provided, using default length of 3397754");
+        }
 
         System.out.println("Comparison of genome annotation predictions:");
 
-        String[] methods = {"method1", "method2"}; //replace with the methods you picked
+        String[] methods = {"GeneMark", "Prokka"}; //replace with the methods you picked
         FeatureList[] gffs = {gff1, gff2};
 
         for(int i = 0; i<2; i++) {
-            CompareGFFs current_comp = new CompareGFFs(groundtruth, gffs[i]);
+            CompareGFFs current_comp = new CompareGFFs(groundtruth, gffs[i], seqLength);
+            //current_comp.compareGFFs();
             System.out.println(String.format("Results for %s:", methods[i]));
             System.out.println(String.format("Sensitivity: %f", current_comp.computeSensitivity()));
             System.out.println(String.format("Specificity: %f", current_comp.computeSpecificity()));
