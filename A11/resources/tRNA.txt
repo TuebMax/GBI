@@ -1,0 +1,7 @@
+Thermosynechococcus elongatus His tRNA
+
+RNA Sequence:
+GGCGAGCGUAGCCAAGUGGUUAAGGCAGUGGAUUGUGGUUCCACCAUUCGUGGGUUCGAGUCCCAUCGCUCGCC
+
+Dot-Bracket Notation Secondary Structure:
+(((((((((((((....))))).....(((((.......))))).....(((((.......)))))))))))))
