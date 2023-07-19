@@ -63,7 +63,6 @@ public class Main {
 
         for(int i = 0; i<2; i++) {
             CompareGFFs current_comp = new CompareGFFs(groundtruth, gffs[i], seqLength);
-            //current_comp.compareGFFs();
             System.out.println(String.format("Results for %s:", methods[i]));
             System.out.println(String.format("Sensitivity: %f", current_comp.computeSensitivity()));
             System.out.println(String.format("Specificity: %f", current_comp.computeSpecificity()));

@@ -54,9 +54,6 @@ public class RNADotPlot {
      * @param rnaDbString {@link String} Represents RNA secondary structure in dot-bracket notation.
      */
     private void parseRnaDbString(String rnaDbString) {
-        // TODO: Implement this method to
-        //       Access the xData and yData attributes of this class to store the data.
-        //       E.g. the input String ((...)) should result in the two lists [1, 2], [6, 7], as base-pairs (1,6) and (2,7) form a bond.
         ArrayList<Integer> openingBrackets = new ArrayList<>();
         char[] charArray = rnaDbString.toCharArray();
         for (int i = 0; i < charArray.length; i++) {
